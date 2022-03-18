@@ -26,12 +26,14 @@ void ToolHelper::Replace_all_Ditincte(string& str,const string& strFind, time_t 
     str.replace(pos, str.find(")", pos) - pos, TransStr);
 
     //{"ts": 100,"tid": "TCP - iMainCmd","name": "CS_LOGIN","ph": "X","dur": 100,"pid": 1,"cname": "yellow"},
-    string ts = to_string(StringToDatetime(str.substr(0, str.find(" "))));
+    string::size_type findPos = str.find("'");
+    time_t currTime = StringToDatetime(str.substr( findPos + 1, str.find("'", findPos + 1) - findPos - 1));
+    string ts = to_string((currTime - startTime)*1000000);
     string jsons;
     jsons += " { \"ts\":" + ts;
     jsons += ", \"tid\":\"" + strFind + "\"";
     jsons += ", \"name\":\"" + TransStr + "\"";
-    jsons += ", \"ph\": \"X\",\"dur\": 100,\"pid\": 1 },";
+    jsons += ", \"ph\": \"X\",\"dur\": 1000000,\"pid\": 1 },";
 
     cout << jsons << endl;
     ofs << jsons << endl;
@@ -63,8 +65,8 @@ void ToolHelper::GetInfo()
 
     string str;
     getline(logFile, str); coutReport << str;
-        cout << str.substr(0, str.find(" ")) << endl;
-    time_t StartTime = StringToDatetime(str.substr(0, str.find(" ")));
+    string::size_type findPos = str.find("'");
+    time_t StartTime = StringToDatetime(str.substr(findPos + 1, str.find("'", findPos + 1) - findPos - 1));
         cout << StartTime << endl;
 
     //隔行读入数据
