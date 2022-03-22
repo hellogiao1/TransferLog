@@ -33,7 +33,12 @@ void ToolHelper::Replace_all_Ditincte(string& str,const string& strFind, time_t 
     jsons += " { \"ts\":" + ts;
     jsons += ", \"tid\":\"" + strFind + "\"";
     jsons += ", \"name\":\"" + TransStr + "\"";
-    jsons += ", \"ph\": \"X\",\"dur\": 1000000,\"pid\": 1 },";
+    string pid = "1";
+    if(strFind == "nMainCmd" || strFind == "nSubCmd")
+    {
+        pid = "2";
+    }
+    jsons += ", \"ph\": \"X\",\"dur\": 1000000,\"pid\":"+ pid + " }, ";
 
     cout << jsons << endl;
     ofs << jsons << endl;
